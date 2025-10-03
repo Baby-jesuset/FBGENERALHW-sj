@@ -5,42 +5,42 @@ const categories = [
   {
     name: "Power Tools",
     image: "/power-tools-collection.jpg",
-    href: "/category/power-tools",
+    href: "/categories/power-tools",
   },
   {
     name: "Hand Tools",
     image: "/hand-tools-hammers-wrenches.jpg",
-    href: "/category/hand-tools",
+    href: "/categories/hand-tools",
   },
   {
     name: "Safety Equipment",
     image: "/safety-gear-hard-hat-gloves.jpg",
-    href: "/category/safety",
+    href: "/categories/safety",
   },
   {
     name: "Fasteners",
     image: "/screws-bolts-nails-fasteners.jpg",
-    href: "/category/fasteners",
+    href: "/categories/fasteners",
   },
   {
     name: "Paint Supplies",
     image: "/paint-brushes-rollers-supplies.jpg",
-    href: "/category/paint",
+    href: "/categories/paint",
   },
   {
     name: "Electrical",
     image: "/electrical-wires-cables-tools.jpg",
-    href: "/category/electrical",
+    href: "/categories/electrical",
   },
   {
     name: "Plumbing",
     image: "/plumbing-pipes-fittings-tools.jpg",
-    href: "/category/plumbing",
+    href: "/categories/plumbing",
   },
   {
     name: "Outdoor & Garden",
     image: "/garden-tools-lawn-equipment.jpg",
-    href: "/category/outdoor",
+    href: "/categories/outdoor",
   },
 ]
 
@@ -54,7 +54,7 @@ export function CategoriesSection() {
             <p className="text-muted-foreground">Find everything you need for your next project</p>
           </div>
           <Link
-            href="/categories"
+            href="/shop"
             className="hidden md:flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
           >
             View All
@@ -83,10 +83,7 @@ export function CategoriesSection() {
         </div>
 
         <div className="mt-8 flex justify-center md:hidden">
-          <Link
-            href="/categories"
-            className="flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
-          >
+          <Link href="/shop" className="flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all">
             View All Categories
             <ArrowRight className="h-4 w-4" />
           </Link>
