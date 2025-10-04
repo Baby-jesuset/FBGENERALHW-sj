@@ -68,15 +68,15 @@ export default function CheckoutPage() {
       <Header />
       <main className="flex-1">
         {/* Page Header */}
-        <div className="bg-muted py-12 md:py-3.5">
-          <div className="container px-4 tracking-normal mx-auto">
+        <div className="bg-muted md:py-3.5 py-0.5">
+          <div className="container tracking-normal leading-7 mx-0 px-3.5">
             <Button variant="ghost" asChild className="mb-4">
               <Link href="/cart">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Cart
+                
               </Link>
             </Button>
-            <h1 className="font-bold text-foreground text-center text-4xl">Checkout</h1>
+            <h1 className="font-bold text-foreground text-center text-2xl mx-0 my-0">Checkout</h1>
           </div>
         </div>
 

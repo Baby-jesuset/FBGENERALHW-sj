@@ -87,9 +87,9 @@ export default function ShopPage() {
       <Header />
       <main className="flex-1">
         {/* Page Header */}
-        <div className="py-12 bg-background md:py-4">
+        <div className="bg-background md:py-4 py-1.5">
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold text-foreground text-center md:text-4xl">SHOP</h1>
+            <h1 className="font-bold text-foreground text-center md:text-4xl text-3xl">SHOP</h1>
           </div>
         </div>
 

@@ -72,7 +72,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
       <Header />
       <main className="flex-1">
         {/* Page Header */}
-        <div className="bg-muted py-12 md:py-3.5">
+        <div className="bg-muted md:py-3.5 py-1.5">
           <div className="container mx-auto px-4 text-left leading-7">
             <Button variant="ghost" asChild className="mb-4">
               <Link href="/shop">
@@ -80,7 +80,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                 Back to Shop
               </Link>
             </Button>
-            <h1 className="text-4xl font-bold text-foreground mb-2 text-center md:text-3xl">{categoryName}</h1>
+            <h1 className="font-bold text-foreground mb-2 text-center md:text-3xl text-2xl">{categoryName}</h1>
             
           </div>
         </div>
