@@ -81,8 +81,8 @@ export default function SignupPage() {
         <div className="container mx-auto px-4 max-w-md">
           <div className="bg-card border border-border rounded-lg p-8 shadow-sm">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-foreground mb-2">Create Account</h1>
-              <p className="text-muted-foreground">Join FB Hardware today</p>
+              <h1 className="text-3xl font-bold mb-2 text-primary">Create Account</h1>
+              <p className="text-secondary">Join FB Hardware today</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -168,7 +168,7 @@ export default function SignupPage() {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Already have an account?{" "}
-                <Link href="/login" className="text-primary hover:underline font-medium">
+                <Link href="/login" className="hover:underline font-medium text-secondary">
                   Sign in
                 </Link>
               </p>

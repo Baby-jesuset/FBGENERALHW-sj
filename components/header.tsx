@@ -129,10 +129,10 @@ export function Header() {
           <div className="fixed top-0 right-0 h-full w-[280px] bg-background z-50 shadow-lg md:hidden animate-in slide-in-from-right duration-300">
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-border">
-                <span className="text-lg font-bold">Menu</span>
+              <div className="flex items-center p-4 border-b border-border justify-end">
+                
                 <Button variant="ghost" size="icon" onClick={closeMobileMenu}>
-                  <X className="h-5 w-5" />
+                  <X className="h-5 w-5 text-primary" />
                   <span className="sr-only">Close menu</span>
                 </Button>
               </div>
@@ -141,28 +141,28 @@ export function Header() {
               <nav className="flex flex-col p-4 gap-2">
                 <Link
                   href="/"
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
+                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
                   onClick={closeMobileMenu}
                 >
                   HOME
                 </Link>
                 <Link
                   href="/shop"
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
+                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
                   onClick={closeMobileMenu}
                 >
                   SHOP
                 </Link>
                 <Link
                   href="/about"
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
+                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
                   onClick={closeMobileMenu}
                 >
                   ABOUT US
                 </Link>
                 <Link
                   href="/contact"
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
+                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
                   onClick={closeMobileMenu}
                 >
                   CONTACT
@@ -212,14 +212,14 @@ export function Header() {
                     <div className="border-t border-border my-2" />
                     <Link
                       href="/login"
-                      className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
+                      className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-primary"
                       onClick={closeMobileMenu}
                     >
                       Login
                     </Link>
                     <Link
                       href="/signup"
-                      className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
+                      className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-primary"
                       onClick={closeMobileMenu}
                     >
                       Sign Up
@@ -231,7 +231,7 @@ export function Header() {
                 <div className="border-t border-border my-2" />
                 <Link
                   href="/cart"
-                  className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent flex items-center justify-between"
+                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent flex items-center justify-between text-destructive"
                   onClick={closeMobileMenu}
                 >
                   <span>Cart</span>

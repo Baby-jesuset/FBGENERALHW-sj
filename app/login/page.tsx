@@ -53,7 +53,7 @@ export default function LoginPage() {
         <div className="container mx-auto px-4 max-w-md">
           <div className="bg-card border border-border rounded-lg p-8 shadow-sm">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
+              <h1 className="text-3xl font-bold mb-2 text-secondary">Welcome Back</h1>
               <p className="text-muted-foreground">Sign in to your account to continue</p>
             </div>
 
@@ -105,7 +105,7 @@ export default function LoginPage() {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link href="/signup" className="text-primary hover:underline font-medium">
+                <Link href="/signup" className="hover:underline font-medium text-secondary">
                   Sign up
                 </Link>
               </p>
