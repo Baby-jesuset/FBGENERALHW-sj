@@ -252,7 +252,7 @@ All rights reserved - FB General Hardware
 ## Contact
 
 For questions or support regarding FB General Hardware:
-- **Location:** Tororo, Uganda
+- **Location:** Luweero Town council, Uganda
 - **Business:** Building materials, tools, equipment, and supplies
 - **Target Customers:** Construction companies, furniture makers, plumbers, wholesale resellers
 

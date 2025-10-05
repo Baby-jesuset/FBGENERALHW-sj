@@ -202,8 +202,8 @@ A complete e-commerce platform with:
 1. **Currency:** All prices in Ugandan Shillings (UGX)
 2. **No Ratings:** Product ratings/reviews removed (can add later if needed)
 3. **Target Audience:** Construction companies, furniture makers, plumbers, wholesale resellers
-4. **Location:** Tororo, Uganda
-5. **Payment Methods:** Mobile Money (MTN, Airtel), Cash on Delivery
+4. **Location:** Luweero Town council Uganda
+5. **Payment Methods:** Cash on Delivery, pay on pickup
 
 ## Design Inspiration Reference
 
