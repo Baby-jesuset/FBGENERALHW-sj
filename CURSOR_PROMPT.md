@@ -1,8 +1,8 @@
-# Lovable Dev Prompt - FB General Hardware E-Commerce Website
+# Cursor Dev Prompt - FB General Hardware E-Commerce Website
 
 ## Project Overview
 
-your working on a modern, full-featured e-commerce website for **FB General Hardware**, a Ugandan hardware store selling building materials, tools, equipment, and supplies. The design is inspired by with a clean, professional aesthetic suitable for a hardware business.
+Your working on a modern, full-featured e-commerce website for **FB General Hardware**, a Ugandan hardware store selling building materials, tools, equipment, and supplies. The design is inspired by with a clean, professional aesthetic suitable for a hardware business.
 
 ## What We're Building
 
