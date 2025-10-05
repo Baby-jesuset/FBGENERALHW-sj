@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Build a modern, full-featured e-commerce website for **FB General Hardware**, a Ugandan hardware store selling building materials, tools, equipment, and supplies. The design is inspired by [iNation420.com](https://ination420.com/) with a clean, professional aesthetic suitable for a hardware business.
+your working on a modern, full-featured e-commerce website for **FB General Hardware**, a Ugandan hardware store selling building materials, tools, equipment, and supplies. The design is inspired by with a clean, professional aesthetic suitable for a hardware business.
 
 ## What We're Building
 
@@ -64,7 +64,7 @@ A complete e-commerce platform with:
 
 5. **Checkout Page** (`/checkout`)
    - Contact and shipping forms
-   - Payment method selection (Mobile Money, Cash on Delivery)
+   - Payment method selection (Cash on Delivery, pay on pickup)
    - Order summary
 
 6. **Categories Page** (`/categories/[slug]`)
@@ -82,39 +82,21 @@ A complete e-commerce platform with:
 
 ### 1. Backend & Database (Priority: HIGH)
 \`\`\`
-- Set up Supabase or Neon database
-- Create products table with schema
-- Create orders table
-- Create customers table (optional)
+- Set up Supabase
+- Create all tables with schema
 - Build API routes for CRUD operations
 - Replace static product data with database queries
 \`\`\`
 
-### 2. Payment Integration (Priority: HIGH)
-\`\`\`
-- Integrate MTN Mobile Money API
-- Integrate Airtel Money API
-- Add payment processing logic
+
 - Implement order confirmation flow
 - Set up email notifications (order confirmation)
 \`\`\`
 
 ### 3. Additional Pages (Priority: MEDIUM)
-\`\`\`
-- About Us page (company history, mission, team)
-- Contact Us page (form, location map, phone/email)
 - Terms & Conditions
 - Privacy Policy
 - FAQ page
-\`\`\`
-
-### 4. User Authentication (Priority: MEDIUM)
-\`\`\`
-- Sign up / Login pages
-- User dashboard
-- Order history
-- Profile management
-- Password reset functionality
 \`\`\`
 
 ### 5. Admin Dashboard (Priority: MEDIUM)
@@ -129,10 +111,6 @@ A complete e-commerce platform with:
 ### 6. Enhanced Features (Priority: LOW)
 \`\`\`
 - Wishlist functionality
-- Product comparison
-- Advanced search with multiple filters
-- Customer reviews (if needed)
-- Live chat support
 - Newsletter integration
 \`\`\`
 
@@ -163,10 +141,8 @@ A complete e-commerce platform with:
 3. Run dev server: `npm run dev`
 4. Start with backend integration (database setup)
 
-### Option 2: Fresh Start with Lovable
-1. Use this prompt to recreate the project
+
 2. Focus on backend integration first
-3. Implement payment gateway
 4. Add remaining pages
 
 ## Key Product Data
@@ -207,7 +183,6 @@ A complete e-commerce platform with:
 
 ## Design Inspiration Reference
 
-The original inspiration site (iNation420.com) features:
 - Full-screen hero with product images
 - Large, bold typography overlays
 - Smooth carousel transitions
@@ -220,17 +195,15 @@ Adapt this style for a hardware store context - more industrial, trustworthy, an
 
 ## Next Steps for Development
 
-1. **Week 1:** Database setup and API integration
-2. **Week 2:** Payment gateway integration
-3. **Week 3:** Additional pages (About, Contact, etc.)
-4. **Week 4:** User authentication and admin dashboard
-5. **Week 5:** Testing, optimization, and deployment
+1. Database setup and API integration
+2. User authentication and admin dashboard
+3. Additional pages
+4. Testing, optimization, and deployment
 
 ## Success Criteria
 
 - [ ] All products load from database
 - [ ] Users can complete full checkout flow
-- [ ] Mobile Money payments process successfully
 - [ ] Site is fully responsive on all devices
 - [ ] Page load time < 3 seconds
 - [ ] Accessibility score > 90
@@ -239,4 +212,4 @@ Adapt this style for a hardware store context - more industrial, trustworthy, an
 
 ---
 
-**Ready to build?** Start with database integration and work your way through the priority list. The frontend is 90% complete - focus on backend, payments, and content pages to reach production readiness.
+**Ready to build?** Start with database integration and work your way through the priority list. The frontend is 90% complete - focus on backend,user authenticatio, admin dashboard and content pages to reach production readiness.
