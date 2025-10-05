@@ -7,7 +7,6 @@
 
 FB General Hardware is a modern, full-featured e-commerce website for a Ugandan hardware store specializing in building materials, tools, equipment, and supplies. The platform serves construction companies, furniture makers, plumbers, and wholesale resellers with top-quality products, exceptional customer service, timely delivery, and expert advice.
 
-**Inspired by:** [iNation420.com](https://ination420.com/) - A modern e-commerce design with clean layouts and smooth user experience.
 
 ## Tech Stack
 
@@ -93,10 +92,6 @@ FB General Hardware is a modern, full-featured e-commerce website for a Ugandan 
 - ⏳ Create product management API
 - ⏳ Implement order management system
 - ⏳ Set up user authentication (optional)
-
-### 2. Payment Integration
-- ⏳ Integrate Mobile Money payment gateway (MTN, Airtel)
-- ⏳ Set up payment processing
 - ⏳ Implement order confirmation emails
 
 ### 3. Additional Pages
