@@ -8,18 +8,13 @@ export async function POST(request: Request, props: { params: Promise<{ id: stri
     const params = await props.params
     const { id } = params
     
-    console.log("API: Updating status for order ID:", id)
-    
     // Parse the request body
     const body = await request.json()
     const { status } = body
     
-    console.log("API: New status:", status)
-    
     // Validate the status value
     const validStatuses = ["pending", "processing", "shipped", "delivered", "cancelled"]
     if (!status || !validStatuses.includes(status)) {
-      console.error("API: Invalid status value:", status)
       return NextResponse.json({ error: "Invalid status value" }, { status: 400 })
     }
 
@@ -32,14 +27,12 @@ export async function POST(request: Request, props: { params: Promise<{ id: stri
       .single()
 
     if (error) {
-      console.error("API: Error updating order status:", error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    console.log("API: Order status updated successfully")
     return NextResponse.json({ success: true, order: data })
   } catch (error: any) {
-    console.error("API: Unexpected error in status update:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message || "Unknown error" }, { status: 500 })
   }
 }

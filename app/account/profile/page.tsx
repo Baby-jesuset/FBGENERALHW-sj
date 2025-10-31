@@ -64,7 +64,7 @@ export default function ProfilePage() {
         description: "Your profile information has been saved successfully.",
       })
     } catch (error: any) {
-      console.error("[v0] Error updating profile:", error)
+      console.error(error)
       toast({
         title: "Update failed",
         description: error.message || "Failed to update profile. Please try again.",

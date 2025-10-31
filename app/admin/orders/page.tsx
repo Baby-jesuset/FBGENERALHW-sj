@@ -5,54 +5,33 @@ import { Button } from "@/components/ui/button"
 export default async function AdminOrdersPage() {
   const supabase = await createClient()
 
-  // First, check if we have any orders at all
+  // Fetch orders
   const { count: orderCount, error: countError } = await supabase
     .from("orders")
     .select("*", { count: "exact", head: true })
-  
-  if (countError) {
-    console.error("Error counting orders:", countError)
-  } else {
-    console.log(`Total orders in database: ${orderCount || 0}`)
-  }
 
-  // Fetch orders directly with Supabase - simplify the query first
+  // Fetch orders directly with Supabase
   const { data: orders, error } = await supabase
     .from("orders")
     .select("*")
     .order("created_at", { ascending: false })
   
-  if (error) {
-    console.error("Error fetching orders:", error)
-  } else {
-    console.log(`Orders fetched successfully: ${orders?.length || 0}`)
-    if (orders && orders.length > 0) {
-      console.log("First order:", orders[0].id, "User ID:", orders[0].user_id)
-    }
-  }
-  
-  // Now fetch user profiles separately
+  // Fetch user profiles separately
   let userProfiles: Record<string, any> = {}
   if (orders && orders.length > 0) {
     // Get unique user IDs
     const userIds = [...new Set(orders.map(order => order.user_id))]
-    console.log(`Unique user IDs in orders: ${userIds.length}`)
     
     const { data: profiles, error: profileError } = await supabase
       .from("profiles")
       .select("id, full_name, email")
       .in("id", userIds)
     
-    if (profileError) {
-      console.error("Error fetching profiles:", profileError)
-    } else {
-      console.log(`Profiles fetched: ${profiles?.length || 0}`)
-      // Create a lookup map
-      userProfiles = (profiles || []).reduce((acc: Record<string, any>, profile) => {
-        acc[profile.id] = profile
-        return acc
-      }, {} as Record<string, any>)
-    }
+    // Create a lookup map
+    userProfiles = (profiles || []).reduce((acc: Record<string, any>, profile) => {
+      acc[profile.id] = profile
+      return acc
+    }, {} as Record<string, any>)
   }
 
   return (

@@ -14,7 +14,7 @@ export async function isAdmin(): Promise<boolean> {
 
     return profile?.is_admin || false
   } catch (error) {
-    console.error("[v0] Error checking admin status:", error)
+    console.error(error)
     return false
   }
 }

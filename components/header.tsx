@@ -26,13 +26,23 @@ export function Header() {
 
   useEffect(() => {
     if (isMobileMenuOpen) {
+      // Lock scroll on body
       document.body.style.overflow = "hidden"
+      // Also prevent touch scroll on mobile
+      document.body.style.position = "fixed"
+      document.body.style.width = "100%"
     } else {
-      document.body.style.overflow = "unset"
+      // Unlock scroll
+      document.body.style.overflow = ""
+      document.body.style.position = ""
+      document.body.style.width = ""
     }
 
+    // Cleanup on unmount
     return () => {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = ""
+      document.body.style.position = ""
+      document.body.style.width = ""
     }
   }, [isMobileMenuOpen])
 
@@ -40,7 +50,6 @@ export function Header() {
 
   const handleLogout = async () => {
     try {
-      console.log("Logging out...")
       // First clear any local state
       localStorage.removeItem("supabase.auth.token")
       
@@ -48,16 +57,13 @@ export function Header() {
       const { error } = await supabase.auth.signOut()
       
       if (error) {
-        console.error("Logout error:", error)
         throw error
       }
-      
-      console.log("Logout successful")
       
       // Use window.location for a full page refresh to ensure clean state
       window.location.href = "/"
     } catch (err) {
-      console.error("Error during logout:", err)
+      console.error(err)
       // Force refresh as fallback
       window.location.reload()
     }
@@ -162,133 +168,155 @@ export function Header() {
               className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Menu</span>
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+              <span className="sr-only">{isMobileMenuOpen ? "Close menu" : "Open menu"}</span>
             </Button>
           </div>
         </div>
       </div>
 
+      {/* Mobile Menu - Full Height Overlay (starts below header) */}
       {isMobileMenuOpen && (
-        <>
-          {/* Overlay */}
-          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={closeMobileMenu} />
+        <div className="md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] z-[100] bg-white shadow-lg border-r border-gray-200 transition-all duration-300 ease-in-out">
+          <div className="flex flex-col h-full">
+            {/* Menu Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white flex-shrink-0">
+              <span className="text-xl font-bold text-gray-900">Menu</span>
+            </div>
 
-          {/* Mobile Menu Panel */}
-          <div className="fixed top-0 right-0 h-full w-[280px] bg-background z-50 shadow-lg md:hidden animate-in slide-in-from-right duration-300">
-            <div className="flex flex-col h-full">
-              {/* Header */}
-              <div className="flex items-center p-4 border-b border-border justify-end">
-                <Button variant="ghost" size="icon" onClick={closeMobileMenu}>
-                  <X className="h-5 w-5 text-primary" />
-                  <span className="sr-only">Close menu</span>
-                </Button>
-              </div>
-
-              {/* Navigation Links */}
-              <nav className="flex flex-col p-4 gap-2">
+            {/* Menu Content - Scrollable */}
+            <div className="flex-1 overflow-y-auto p-4 bg-white min-h-0">
+              <nav className="space-y-4">
+                {/* Main Navigation */}
                 <Link
                   href="/"
-                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
                   onClick={closeMobileMenu}
+                  className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors bg-white"
                 >
                   HOME
                 </Link>
                 <Link
                   href="/shop"
-                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
                   onClick={closeMobileMenu}
+                  className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   SHOP
                 </Link>
                 <Link
-                  href="/about"
-                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
+                  href="/categories/all"
                   onClick={closeMobileMenu}
+                  className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  ABOUT US
+                  CATEGORIES
+                </Link>
+                <Link
+                  href="/about"
+                  onClick={closeMobileMenu}
+                  className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  ABOUT
                 </Link>
                 <Link
                   href="/contact"
-                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-secondary"
                   onClick={closeMobileMenu}
+                  className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   CONTACT
                 </Link>
 
-                {/* User Account Section */}
+                {/* Divider */}
+                <div className="my-4 border-t border-gray-200" />
+
+                {/* User Section */}
                 {isLoading ? (
-                  <div className="border-t border-border my-2 py-4 px-4 text-sm text-muted-foreground">
+                  <div className="p-4 text-base text-gray-500">
                     Loading...
                   </div>
                 ) : isAuthenticated && user ? (
                   <>
-                    <div className="border-t border-border my-2" />
-                    <div className="px-4 py-2">
-                      <p className="text-sm font-medium">{user?.full_name || "User"}</p>
-                      <p className="text-xs text-muted-foreground">{user?.email}</p>
+                    <div className="p-4 mb-2 bg-gray-50 rounded-lg">
+                      <p className="text-base font-semibold text-gray-900">
+                        {user?.full_name || "User"}
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {user?.email}
+                      </p>
                     </div>
                     <Link
                       href="/account"
-                      className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
                       onClick={closeMobileMenu}
+                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       My Account
                     </Link>
                     <Link
                       href="/account/orders"
-                      className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
                       onClick={closeMobileMenu}
+                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       Order History
                     </Link>
                     <Link
                       href="/account/profile"
-                      className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent"
                       onClick={closeMobileMenu}
+                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       Profile Settings
                     </Link>
+                    {user?.is_admin && (
+                      <Link
+                        href="/admin"
+                        onClick={closeMobileMenu}
+                        className="block p-4 text-lg font-semibold text-primary hover:bg-gray-100 rounded-lg transition-colors"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
                     <button
                       onClick={() => {
                         handleLogout()
                         closeMobileMenu()
                       }}
-                      className="text-sm font-medium text-foreground hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-left w-full"
+                      className="w-full text-left p-4 text-lg font-medium text-red-600 hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       Logout
                     </button>
                   </>
                 ) : (
                   <>
-                    <div className="border-t border-border my-2" />
                     <Link
                       href="/login"
-                      className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-primary"
                       onClick={closeMobileMenu}
+                      className="block p-4 text-lg font-medium text-primary hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       Login
                     </Link>
                     <Link
                       href="/signup"
-                      className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent text-primary"
                       onClick={closeMobileMenu}
+                      className="block p-4 text-lg font-medium text-primary hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       Sign Up
                     </Link>
                   </>
                 )}
 
-                {/* Additional Actions */}
-                <div className="border-t border-border my-2" />
+                {/* Divider */}
+                <div className="my-4 border-t border-gray-200" />
+
+                {/* Cart Link */}
                 <Link
                   href="/cart"
-                  className="text-sm font-medium hover:text-primary transition-colors py-3 px-4 rounded-md hover:bg-accent flex items-center justify-between text-destructive"
                   onClick={closeMobileMenu}
+                  className="flex items-center justify-between p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  <span>Cart</span>
+                  <span>Shopping Cart</span>
                   {totalItems > 0 && (
-                    <span className="h-6 w-6 rounded-full bg-secondary text-secondary-foreground text-xs flex items-center justify-center font-medium">
+                    <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-primary rounded-full">
                       {totalItems}
                     </span>
                   )}
@@ -296,7 +324,7 @@ export function Header() {
               </nav>
             </div>
           </div>
-        </>
+        </div>
       )}
     </header>
   )

@@ -76,7 +76,7 @@ export default function OrdersPage() {
 
         setOrders(ordersWithItems)
       } catch (error) {
-        console.error("[v0] Error fetching orders:", error)
+        console.error(error)
       } finally {
         setOrdersLoading(false)
       }

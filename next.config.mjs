@@ -10,9 +10,15 @@ const nextConfig = {
   images: {
     unoptimized: false, // Set to false for production
     formats: ['image/avif', 'image/webp'],
-    domains: [
-      'auxhnpndxisbzizklbzu.supabase.co', // Your Supabase storage
-      'localhost',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'auxhnpndxisbzizklbzu.supabase.co', // Your Supabase storage
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

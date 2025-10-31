@@ -10,6 +10,7 @@ export async function GET(request: Request) {
     const sort = searchParams.get("sort") || "created_at"
     const order = searchParams.get("order") || "desc"
     const featured = searchParams.get("featured")
+    const limitParam = searchParams.get("limit")
 
     const supabase = await createClient()
     let query = supabase.from("products").select(`
@@ -37,6 +38,14 @@ export async function GET(request: Request) {
     // Apply sorting
     query = query.order(sort, { ascending: order === "asc" })
 
+    // Apply limit if provided
+    if (limitParam) {
+      const limit = parseInt(limitParam, 10)
+      if (!isNaN(limit) && limit > 0) {
+        query = query.limit(limit)
+      }
+    }
+
     const { data, error } = await query
 
     // Normalize image paths and ensure they're properly formatted
@@ -55,7 +64,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ products })
   } catch (error: any) {
-    console.error("[v0] Error fetching products:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
@@ -81,7 +90,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ product: data }, { status: 201 })
   } catch (error: any) {
-    console.error("[v0] Error creating product:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

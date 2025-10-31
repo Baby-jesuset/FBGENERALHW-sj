@@ -17,7 +17,7 @@ export async function GET() {
 
     return NextResponse.json({ categories: data || [] })
   } catch (error: any) {
-    console.error("[v0] Error fetching categories:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ category: data }, { status: 201 })
   } catch (error: any) {
-    console.error("[v0] Error creating category:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

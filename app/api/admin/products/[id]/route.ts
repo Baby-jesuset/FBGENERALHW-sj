@@ -20,7 +20,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
 
     return NextResponse.json({ product: data })
   } catch (error: any) {
-    console.error("[v0] Error fetching product:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
@@ -45,7 +45,7 @@ export async function PATCH(request: Request, props: { params: Promise<{ id: str
 
     return NextResponse.json({ product: data })
   } catch (error: any) {
-    console.error("[v0] Error updating product:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
@@ -79,7 +79,7 @@ export async function DELETE(request: Request, props: { params: Promise<{ id: st
 
     return NextResponse.json({ success: true })
   } catch (error: any) {
-    console.error("[v0] Error deleting product:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

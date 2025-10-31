@@ -1,17 +1,26 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
+import { createClient } from "@/lib/supabase/server"
+import { getImagePath } from "@/lib/utils"
 
 async function getCategories() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/categories`, {
-      cache: "no-store",
-    })
-    if (!res.ok) throw new Error("Failed to fetch")
-    const data = await res.json()
-    return data.categories || []
+    const supabase = await createClient()
+    const { data, error } = await supabase.from("categories").select("*").order("name", { ascending: true })
+    
+    if (error) {
+      console.error(error)
+      return []
+    }
+
+    // Normalize image paths
+    return (data || []).map((category) => ({
+      ...category,
+      image: getImagePath(category.image)
+    }))
   } catch (error) {
-    console.error("[v0] Failed to fetch categories:", error)
+    console.error(error)
     return []
   }
 }

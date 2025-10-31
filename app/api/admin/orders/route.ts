@@ -20,7 +20,7 @@ export async function GET() {
 
     return NextResponse.json({ orders: data || [] })
   } catch (error: any) {
-    console.error("[v0] Error fetching orders:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

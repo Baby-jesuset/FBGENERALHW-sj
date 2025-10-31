@@ -8,42 +8,25 @@ export default async function AdminDashboard() {
   const { count: productsCount, error: productsError } = await supabase
     .from("products")
     .select("*", { count: "exact", head: true })
-  
-  if (productsError) console.error("Error fetching products count:", productsError)
 
   const { count: ordersCount, error: ordersError } = await supabase
     .from("orders")
     .select("*", { count: "exact", head: true })
-  
-  if (ordersError) console.error("Error fetching orders count:", ordersError)
 
-  // First get all profiles to see what we're working with
+  // Get all profiles
   const { data: allProfiles, error: allProfilesError } = await supabase
     .from("profiles")
     .select("id, is_admin")
-  
-  if (allProfilesError) {
-    console.error("Error fetching all profiles:", allProfilesError)
-  } else {
-    console.log(`Total profiles found: ${allProfiles?.length || 0}`)
-    console.log("Profiles with is_admin=true:", allProfiles?.filter(p => p.is_admin === true).length || 0)
-    console.log("Profiles with is_admin=false:", allProfiles?.filter(p => p.is_admin === false).length || 0)
-    console.log("Profiles with is_admin=null:", allProfiles?.filter(p => p.is_admin === null).length || 0)
-  }
 
   // Count non-admin users as customers - using "is" for null safety
   const { count: usersCount, error: usersError } = await supabase
     .from("profiles")
     .select("*", { count: "exact", head: true })
     .is("is_admin", false)
-  
-  if (usersError) console.error("Error fetching users count:", usersError)
 
   const { data: orders, error: revenueError } = await supabase
     .from("orders")
     .select("total")
-  
-  if (revenueError) console.error("Error fetching revenue data:", revenueError)
 
   const totalRevenue = orders?.reduce((sum, order) => sum + Number(order.total), 0) || 0
 

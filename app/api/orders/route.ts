@@ -42,7 +42,7 @@ export async function GET() {
 
     return NextResponse.json({ orders: ordersWithItems })
   } catch (error: any) {
-    console.error("[v0] Error fetching orders:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ order }, { status: 201 })
   } catch (error: any) {
-    console.error("[v0] Error creating order:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

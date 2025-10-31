@@ -37,7 +37,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
       } 
     })
   } catch (error: any) {
-    console.error("[v0] Error fetching order:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
@@ -69,7 +69,7 @@ export async function PATCH(request: Request, props: { params: Promise<{ id: str
 
     return NextResponse.json({ order: data })
   } catch (error: any) {
-    console.error("[v0] Error updating order:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

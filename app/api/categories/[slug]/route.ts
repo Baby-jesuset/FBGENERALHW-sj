@@ -33,7 +33,7 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
       products: products || [],
     })
   } catch (error: any) {
-    console.error("[v0] Error fetching category:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

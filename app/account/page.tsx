@@ -46,7 +46,7 @@ export default function AccountPage() {
 
         setOrders(data || [])
       } catch (error) {
-        console.error("[v0] Error fetching orders:", error)
+        console.error(error)
       } finally {
         setOrdersLoading(false)
       }
@@ -59,7 +59,7 @@ export default function AccountPage() {
 
   const handleLogout = async () => {
     try {
-      console.log("Logging out from account page...")
+      
       // First clear any local state
       localStorage.removeItem("supabase.auth.token")
       
@@ -71,7 +71,7 @@ export default function AccountPage() {
         throw error
       }
       
-      console.log("Logout successful")
+      
       
       // Use window.location for a full page refresh to ensure clean state
       window.location.href = "/"

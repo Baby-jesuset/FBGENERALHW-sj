@@ -37,7 +37,7 @@ export default function ResetPasswordPage() {
         description: "Check your email for password reset instructions.",
       })
     } catch (error: any) {
-      console.error("[v0] Password reset error:", error)
+      console.error(error)
       toast({
         title: "Error",
         description: error.message || "Failed to send reset email. Please try again.",

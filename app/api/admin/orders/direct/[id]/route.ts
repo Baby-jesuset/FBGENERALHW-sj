@@ -8,8 +8,6 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
     const supabase = await createClient()
     const params = await props.params
     const { id } = params
-    
-    console.log("API: Fetching order with ID:", id)
 
     // Get order details
     const { data: order, error: orderError } = await supabase
@@ -19,12 +17,10 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
       .single()
 
     if (orderError) {
-      console.error("API: Error fetching order:", orderError)
       return NextResponse.json({ error: orderError.message }, { status: 500 })
     }
     
     if (!order) {
-      console.log("API: No order found with ID:", id)
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
 
@@ -35,17 +31,15 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
       .eq("order_id", id)
 
     if (itemsError) {
-      console.error("API: Error fetching order items:", itemsError)
       return NextResponse.json({ error: itemsError.message }, { status: 500 })
     }
 
-    console.log("API: Successfully fetched order and items")
     return NextResponse.json({ 
       order,
       items: items || []
     })
   } catch (error: any) {
-    console.error("API: Unexpected error:", error)
+    console.error(error)
     return NextResponse.json({ error: error.message || "Unknown error" }, { status: 500 })
   }
 }

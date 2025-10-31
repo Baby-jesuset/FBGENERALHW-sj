@@ -28,11 +28,16 @@ export default function ProductPage() {
   const { data, error, isLoading } = useSWR(`/api/products/${productId}`, fetcher)
   const product = data?.product
 
+  // Fetch related products from the same category, excluding current product
+  // Request 5 to ensure we get at least 4 after filtering out the current product
   const { data: relatedData } = useSWR(
-    product ? `/api/products?category=${encodeURIComponent(product.category)}&limit=4` : null,
+    product?.category_id ? `/api/products?category=${encodeURIComponent(product.category_id)}&limit=5` : null,
     fetcher,
   )
-  const relatedProducts = relatedData?.products?.filter((p: any) => p.id !== product?.id) || []
+  // Filter out current product and limit to 4 related products
+  const relatedProducts = (relatedData?.products || [])
+    .filter((p: any) => p.id !== product?.id)
+    .slice(0, 4)
 
   const handleAddToCart = () => {
     if (!product) return
@@ -91,11 +96,12 @@ export default function ProductPage() {
     )
   }
 
+  // Handle product images - parse if string, normalize paths
   const images = product.images
-    ? typeof product.images === "string"
-      ? JSON.parse(product.images)
-      : product.images
-    : [product.image]
+    ? (typeof product.images === "string" ? JSON.parse(product.images) : product.images).map((img: string) => 
+        img.startsWith("http") || img.startsWith("/") ? img : `/${img}`
+      )
+    : [product.image || "/placeholder.svg"]
 
   const specs = product.specs ? (typeof product.specs === "string" ? JSON.parse(product.specs) : product.specs) : []
 
@@ -176,7 +182,9 @@ export default function ProductPage() {
                     <Heart className="h-5 w-5" />
                   </Button>
                 </div>
-                <p className="text-muted-foreground">{product.category}</p>
+                {product.categories && (
+                  <p className="text-muted-foreground">{product.categories.name}</p>
+                )}
               </div>
 
               <div className="flex items-baseline gap-3">
@@ -281,7 +289,7 @@ export default function ProductPage() {
                       <Link href={`/product/${relatedProduct.id}`}>
                         <div className="relative aspect-square overflow-hidden bg-background">
                           <Image
-                            src={relatedProduct.image_url || "/placeholder.svg"}
+                            src={relatedProduct.image || "/placeholder.svg"}
                             alt={relatedProduct.name}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"

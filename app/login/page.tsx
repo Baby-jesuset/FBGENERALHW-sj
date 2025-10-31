@@ -27,7 +27,7 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      console.log("[v0] Attempting login with email:", email)
+      
       
       // Sign in with password
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
@@ -36,26 +36,26 @@ export default function LoginPage() {
       })
 
       if (signInError) {
-        console.error("[v0] Sign in error:", signInError)
+        console.error(signInError)
         throw signInError
       }
       
-      console.log("[v0] Sign in successful:", signInData.user ? "User found" : "No user")
+      
       
       // Get user after sign in
       const { data: { user: authUser }, error: getUserError } = await supabase.auth.getUser()
       
       if (getUserError) {
-        console.error("[v0] Get user error:", getUserError)
+        console.error(getUserError)
         throw getUserError
       }
       
       if (!authUser) {
-        console.error("[v0] No authenticated user found after login")
+        console.error("No authenticated user found after login")
         throw new Error("Authentication failed. Please try again.")
       }
       
-      console.log("[v0] Auth user retrieved:", authUser.id)
+      
       
       // Get profile with admin status
       const { data: profile, error: profileError } = await supabase
@@ -65,11 +65,11 @@ export default function LoginPage() {
         .single()
       
       if (profileError) {
-        console.error("[v0] Profile fetch error:", profileError)
+        console.error(profileError)
         // Don't throw here, just log the error
       }
       
-      console.log("[v0] Profile data:", profile)
+      
       
       toast({
         title: "Welcome back!",
@@ -81,21 +81,21 @@ export default function LoginPage() {
       setTimeout(() => {
         try {
           if (profile?.is_admin) {
-            console.log("[v0] Redirecting to admin")
+            
             router.replace("/admin")
           } else {
-            console.log("[v0] Redirecting to account")
+            
             router.replace("/account")
           }
         } catch (navError) {
-          console.error("[v0] Navigation error:", navError)
+          console.error(navError)
           // Fallback to window.location if router fails
           window.location.href = profile?.is_admin ? "/admin" : "/account"
         }
       }, 800)
       
     } catch (error: any) {
-      console.error("[v0] Login process error:", error)
+      console.error(error)
       toast({
         title: "Login failed",
         description: error.message || "Invalid email or password. Please try again.",

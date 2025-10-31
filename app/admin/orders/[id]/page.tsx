@@ -29,16 +29,11 @@ export default function OrderDetailsPage() {
   const supabase = createClient()
 
   const orderId = params.id as string
-  
-  console.log("Order ID from params:", orderId)
 
   useEffect(() => {
-    // Make sure orderId is available before fetching
     if (orderId) {
-      console.log("Fetching order details for ID:", orderId)
       fetchOrderDetails()
     } else {
-      console.error("No order ID available")
       setError("No order ID provided")
       setLoading(false)
     }
@@ -47,37 +42,29 @@ export default function OrderDetailsPage() {
   const fetchOrderDetails = async () => {
     try {
       setLoading(true)
-      console.log("Starting to fetch order details")
       
       // Try using the direct API endpoint first
       try {
-        console.log("Trying direct API endpoint")
         const response = await fetch(`/api/admin/orders/direct/${orderId}`)
         
         if (response.ok) {
           const data = await response.json()
-          console.log("Direct API success:", data)
           
-          if (data.order) {
-            setOrder(data.order)
+        if (data.order) {
+          setOrder(data.order)
             setStatus(data.order.status || "pending")
             setOrderItems(data.items || [])
-            console.log("Order loaded via direct API")
             return
           }
-        } else {
-          console.log("Direct API failed, status:", response.status)
         }
       } catch (apiError) {
         console.error("Error using direct API:", apiError)
       }
       
       // Fallback to Supabase client if direct API fails
-      console.log("Falling back to Supabase client")
       const supabase = createClient()
       
       // Fetch order details
-      console.log("Fetching order with ID:", orderId)
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .select("*")
@@ -85,14 +72,10 @@ export default function OrderDetailsPage() {
         .single()
       
       if (orderError) {
-        console.error("Error fetching order:", orderError)
         throw orderError
       }
       
-      console.log("Order data received:", orderData ? "Yes" : "No")
-      
       if (!orderData) {
-        console.error("No order found with ID:", orderId)
         setError("Order not found")
         toast({
           title: "Order not found",
@@ -102,23 +85,19 @@ export default function OrderDetailsPage() {
         return
       }
       
-      console.log("Order data:", orderData)
       setOrder(orderData)
       setStatus(orderData.status || "pending")
       
       // Fetch order items
-      console.log("Fetching order items for order ID:", orderId)
       const { data: itemsData, error: itemsError } = await supabase
         .from("order_items")
         .select("*")
         .eq("order_id", orderId)
       
       if (itemsError) {
-        console.error("Error fetching order items:", itemsError)
         throw itemsError
       }
       
-      console.log("Order items received:", itemsData?.length || 0)
       setOrderItems(itemsData || [])
       
     } catch (error: any) {
@@ -130,7 +109,6 @@ export default function OrderDetailsPage() {
         variant: "destructive",
       })
     } finally {
-      console.log("Finished fetching order details")
       setLoading(false)
     }
   }
@@ -138,25 +116,21 @@ export default function OrderDetailsPage() {
   const updateOrderStatus = async () => {
     try {
       setUpdating(true)
-      console.log("Updating order status to:", status)
-      console.log("For order ID:", orderId)
       
       // Create a fresh Supabase client for this request
       const supabase = createClient()
       
       // Try direct API first
       try {
-        console.log("Trying direct API for status update")
         const response = await fetch(`/api/admin/orders/direct/${orderId}/status`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ status }),
-        })
-        
+        body: JSON.stringify({ status }),
+      })
+
         if (response.ok) {
-          console.log("Status updated successfully via API")
           toast({
             title: "Status updated",
             description: `Order status has been updated to ${status}`,
@@ -165,32 +139,26 @@ export default function OrderDetailsPage() {
           // Update local order data
           setOrder({ ...order, status })
           return
-        } else {
-          const errorData = await response.json()
-          console.error("API status update failed:", errorData)
         }
       } catch (apiError) {
         console.error("Error using API for status update:", apiError)
       }
       
       // Fall back to direct Supabase update
-      console.log("Falling back to direct Supabase update")
       const { error } = await supabase
         .from("orders")
         .update({ status })
         .eq("id", orderId)
       
       if (error) {
-        console.error("Supabase update error:", error)
         throw error
       }
-      
-      console.log("Status updated successfully via Supabase")
+
       toast({
         title: "Status updated",
         description: `Order status has been updated to ${status}`,
       })
-      
+
       // Update local order data
       setOrder({ ...order, status })
     } catch (error: any) {
@@ -281,8 +249,8 @@ export default function OrderDetailsPage() {
           <Button variant="outline" size="sm" asChild>
             <Link href="/admin/orders">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Orders
-            </Link>
+          Back to Orders
+        </Link>
           </Button>
           <h1 className="text-2xl font-bold">Order #{orderId.slice(0, 8)}</h1>
         </div>
@@ -314,7 +282,6 @@ export default function OrderDetailsPage() {
               <Select 
                 value={status} 
                 onValueChange={(value) => {
-                  console.log("Status selected:", value)
                   setStatus(value)
                 }}
               >
@@ -334,7 +301,7 @@ export default function OrderDetailsPage() {
                 onClick={updateOrderStatus}
               >
                 {updating ? "Updating..." : "Update"}
-              </Button>
+            </Button>
             </div>
           </div>
         </div>
@@ -354,10 +321,10 @@ export default function OrderDetailsPage() {
             <p>{order?.city}, {order?.country}</p>
             {order?.postal_code && <p>Postal Code: {order.postal_code}</p>}
           </div>
+          </div>
         </div>
-      </div>
 
-      {/* Order Items */}
+        {/* Order Items */}
       <div className="bg-card border border-border rounded-lg p-4 mb-4">
         <h2 className="text-lg font-medium mb-2">Order Items</h2>
         <div className="overflow-x-auto">
@@ -405,8 +372,8 @@ export default function OrderDetailsPage() {
               </tr>
             </tfoot>
           </table>
+          </div>
         </div>
-      </div>
 
       {/* Payment Info */}
       <div className="bg-card border border-border rounded-lg p-4">
