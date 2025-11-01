@@ -295,7 +295,7 @@ export default function ProductPage() {
             <div className="mt-16">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">Related Products</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct) => (
+                {relatedProducts.map((relatedProduct: Product) => (
                   <Card
                     key={relatedProduct.id}
                     className="group overflow-hidden border-border hover:border-primary transition-all"
