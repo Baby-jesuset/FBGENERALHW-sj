@@ -1,13 +1,11 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2, Edit } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { useRouter } from "next/navigation"
 import { LoadingSpinner } from "@/components/loading-spinner"
 
 interface Category {
@@ -25,7 +23,6 @@ export default function AdminCategoriesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const { toast } = useToast()
-  const router = useRouter()
 
   const fetchCategories = useCallback(async () => {
     try {

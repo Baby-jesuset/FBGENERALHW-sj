@@ -15,6 +15,27 @@ import { useToast } from "@/hooks/use-toast"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  category_id: string;
+  image?: string;
+  images?: string | string[];
+  specs?: string | { label: string; value: string }[];
+  is_featured?: boolean;
+  categories?: {
+    name: string;
+  };
+}
+
+interface Spec {
+  label: string;
+  value: string;
+}
+
 export default function ProductPage() {
   const params = useParams()
   const router = useRouter()
@@ -36,7 +57,7 @@ export default function ProductPage() {
   )
   // Filter out current product and limit to 4 related products
   const relatedProducts = (relatedData?.products || [])
-    .filter((p: any) => p.id !== product?.id)
+    .filter((p: Product) => p.id !== product?.id)
     .slice(0, 4)
 
   const handleAddToCart = () => {
@@ -97,7 +118,7 @@ export default function ProductPage() {
       )
     : [product.image || "/placeholder.svg"]
 
-  const specs = product.specs ? (typeof product.specs === "string" ? JSON.parse(product.specs) : product.specs) : []
+  const specs: Spec[] = product.specs ? (typeof product.specs === "string" ? JSON.parse(product.specs) : product.specs) : []
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -256,7 +277,7 @@ export default function ProductPage() {
                   <CardContent className="p-6">
                     <h3 className="font-semibold text-lg mb-4">Specifications</h3>
                     <div className="space-y-3">
-                      {specs.map((spec: any, index: number) => (
+                      {specs.map((spec, index: number) => (
                         <div key={index} className="flex justify-between py-2 border-b border-border last:border-0">
                           <span className="text-muted-foreground">{spec.label}</span>
                           <span className="font-medium text-foreground">{spec.value}</span>
@@ -274,7 +295,7 @@ export default function ProductPage() {
             <div className="mt-16">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-8">Related Products</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct: any) => (
+                {relatedProducts.map((relatedProduct) => (
                   <Card
                     key={relatedProduct.id}
                     className="group overflow-hidden border-border hover:border-primary transition-all"
