@@ -22,12 +22,12 @@ export default function CartPage() {
   const tax = subtotal * 0.18 // 18% VAT
   const total = subtotal + shipping + tax
 
-  const handleQuantityChange = (id: number, newQuantity: number) => {
+  const handleQuantityChange = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return
     updateQuantity(id, newQuantity)
   }
 
-  const handleRemoveItem = (id: number, name: string) => {
+  const handleRemoveItem = (id: string, name: string) => {
     removeItem(id)
     toast({
       title: "Removed from cart",
