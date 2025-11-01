@@ -63,11 +63,11 @@ export default function ProfilePage() {
         title: "Profile updated!",
         description: "Your profile information has been saved successfully.",
       })
-    } catch (error: any) {
+    } catch (error) {
       console.error(error)
       toast({
         title: "Update failed",
-        description: error.message || "Failed to update profile. Please try again.",
+        description: (error as Error).message || "Failed to update profile. Please try again.",
         variant: "destructive",
       })
     } finally {

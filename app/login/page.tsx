@@ -31,7 +31,7 @@ export default function LoginPage() {
       
       
       // Sign in with password
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
@@ -82,10 +82,10 @@ export default function LoginPage() {
 
       router.replace(targetUrl)
       
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Login Failed",
-        description: error.message || "An unexpected error occurred. Please try again.",
+        description: (error as Error).message || "An unexpected error occurred. Please try again.",
         variant: "destructive",
       })
     } finally {
@@ -151,7 +151,7 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link href="/signup" className="hover:underline font-medium text-secondary">
                   Sign up
                 </Link>

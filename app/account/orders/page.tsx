@@ -85,7 +85,7 @@ export default function OrdersPage() {
     if (user) {
       fetchOrders()
     }
-  }, [user])
+  }, [user, supabase])
 
   if (isLoading || !user) {
     return null

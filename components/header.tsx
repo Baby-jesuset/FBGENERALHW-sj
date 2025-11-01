@@ -22,7 +22,6 @@ export function Header() {
   const { isAuthenticated, user, isLoading } = useAuth()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const supabase = createClient()
-  const router = useRouter()
 
   useEffect(() => {
     if (isMobileMenuOpen) {

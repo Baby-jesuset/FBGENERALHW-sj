@@ -5,26 +5,26 @@ export default async function AdminDashboard() {
   const supabase = await createClient()
 
   // Fetch stats using consistent approach for all queries
-  const { count: productsCount, error: productsError } = await supabase
+  const { count: productsCount } = await supabase
     .from("products")
     .select("*", { count: "exact", head: true })
 
-  const { count: ordersCount, error: ordersError } = await supabase
+  const { count: ordersCount } = await supabase
     .from("orders")
     .select("*", { count: "exact", head: true })
 
   // Get all profiles
-  const { data: allProfiles, error: allProfilesError } = await supabase
+  await supabase
     .from("profiles")
     .select("id, is_admin")
 
   // Count non-admin users as customers
-  const { count: usersCount, error: usersError } = await supabase
+  const { count: usersCount } = await supabase
     .from("profiles")
     .select("*", { count: "exact", head: true })
     .or("is_admin.is.false,is_admin.is.null")
 
-  const { data: orders, error: revenueError } = await supabase
+  const { data: orders } = await supabase
     .from("orders")
     .select("total")
 

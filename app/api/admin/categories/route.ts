@@ -17,12 +17,12 @@ export async function GET() {
     if (error) throw error
 
     return NextResponse.json({ categories: data || [] })
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 403 })
     }
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }
 
@@ -42,11 +42,11 @@ export async function POST(request: Request) {
     if (error) throw error
 
     return NextResponse.json({ category: data }, { status: 201 })
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 403 })
     }
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }

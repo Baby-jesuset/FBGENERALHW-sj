@@ -32,8 +32,8 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
       category,
       products: products || [],
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }

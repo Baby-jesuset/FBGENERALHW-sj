@@ -20,12 +20,12 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
     if (error) throw error
 
     return NextResponse.json({ category: data })
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 403 })
     }
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }
 
@@ -48,12 +48,12 @@ export async function PATCH(request: Request, props: { params: Promise<{ id: str
     if (error) throw error
 
     return NextResponse.json({ category: data })
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 403 })
     }
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }
 
@@ -85,11 +85,11 @@ export async function DELETE(request: Request, props: { params: Promise<{ id: st
     if (error) throw error
 
     return NextResponse.json({ success: true })
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 403 })
     }
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }

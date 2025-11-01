@@ -55,7 +55,7 @@ export default function AccountPage() {
     if (user) {
       fetchOrders()
     }
-  }, [user])
+  }, [user, supabase])
 
   const handleLogout = async () => {
     try {

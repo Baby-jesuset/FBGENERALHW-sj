@@ -16,7 +16,7 @@ export default function SignUpSuccessPage() {
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-2">Check Your Email</h1>
             <p className="text-muted-foreground mb-6">
-              We've sent you a confirmation email. Please check your inbox and click the link to verify your account.
+              We&apos;ve sent you a confirmation email. Please check your inbox and click the link to verify your account.
             </p>
             <div className="space-y-3">
               <Button asChild className="w-full">

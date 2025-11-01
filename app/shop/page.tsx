@@ -17,6 +17,21 @@ import { LoadingSpinner } from "@/components/loading-spinner"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  stock: number;
+  image?: string;
+  is_featured?: boolean;
+}
+
+interface Category {
+  id: string;
+  name: string;
+}
+
 export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
@@ -29,8 +44,8 @@ export default function ShopPage() {
   const { data: productsData, error: productsError, isLoading: productsLoading } = useSWR("/api/products", fetcher)
   const { data: categoriesData } = useSWR("/api/categories", fetcher)
 
-  const products = productsData?.products || []
-  const categories = ["All", ...(categoriesData?.categories?.map((c: any) => c.name) || [])]
+  const products: Product[] = useMemo(() => productsData?.products || [], [productsData]);
+  const categories: string[] = useMemo(() => ["All", ...(categoriesData?.categories?.map((c: Category) => c.name) || [])], [categoriesData]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,30 +69,31 @@ export default function ShopPage() {
   }, [])
 
   const filteredAndSortedProducts = useMemo(() => {
-    const filtered = products.filter((product: any) => {
+    const filtered = products.filter((product) => {
       const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesCategory = selectedCategory === "All" || product.category === selectedCategory
+      const productCategory = categoriesData?.categories?.find((c: Category) => c.id === product.category)?.name;
+      const matchesCategory = selectedCategory === "All" || productCategory === selectedCategory
       return matchesSearch && matchesCategory
     })
 
     switch (sortBy) {
       case "price-low":
-        filtered.sort((a: any, b: any) => a.price - b.price)
+        filtered.sort((a, b) => a.price - b.price)
         break
       case "price-high":
-        filtered.sort((a: any, b: any) => b.price - a.price)
+        filtered.sort((a, b) => b.price - a.price)
         break
       case "name":
-        filtered.sort((a: any, b: any) => a.name.localeCompare(b.name))
+        filtered.sort((a, b) => a.name.localeCompare(b.name))
         break
       default:
         break
     }
 
     return filtered
-  }, [products, searchQuery, selectedCategory, sortBy])
+  }, [products, searchQuery, selectedCategory, sortBy, categoriesData])
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     // Check if product is out of stock
     if (product.stock <= 0) {
       toast({
@@ -192,7 +208,7 @@ export default function ShopPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {filteredAndSortedProducts.map((product: any) => (
+              {filteredAndSortedProducts.map((product) => (
                 <Card
                   key={product.id}
                   className="group overflow-hidden border-border hover:border-primary transition-all"

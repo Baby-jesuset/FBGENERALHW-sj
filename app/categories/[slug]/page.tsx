@@ -15,6 +15,14 @@ import { useToast } from "@/hooks/use-toast"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+  is_featured?: boolean;
+}
+
 export default function CategoryPage(props: { params: Promise<{ slug: string }> }) {
   const params = use(props.params);
   const { slug } = params
@@ -24,20 +32,21 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
 
   const { data, error, isLoading } = useSWR(`/api/categories/${slug}`, fetcher)
   const category = data?.category
-  const products = data?.products || []
+  
+  const products: Product[] = useMemo(() => data?.products || [], [data]);
 
   const sortedProducts = useMemo(() => {
     const sorted = [...products]
 
     switch (sortBy) {
       case "price-low":
-        sorted.sort((a: any, b: any) => a.price - b.price)
+        sorted.sort((a, b) => a.price - b.price)
         break
       case "price-high":
-        sorted.sort((a: any, b: any) => b.price - a.price)
+        sorted.sort((a, b) => b.price - a.price)
         break
       case "name":
-        sorted.sort((a: any, b: any) => a.name.localeCompare(b.name))
+        sorted.sort((a, b) => a.name.localeCompare(b.name))
         break
       default:
         break
@@ -46,7 +55,7 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
     return sorted
   }, [products, sortBy])
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     addItem(product.id)
     toast({
       title: "Added to cart",
@@ -126,7 +135,7 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {sortedProducts.map((product: any) => (
+              {sortedProducts.map((product) => (
                 <Card
                   key={product.id}
                   className="group overflow-hidden border-border hover:border-primary transition-all"

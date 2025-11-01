@@ -4,7 +4,14 @@ import { ArrowRight } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { getImagePath } from "@/lib/utils"
 
-async function getCategories() {
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  image: string | null;
+}
+
+async function getCategories(): Promise<Category[]> {
   try {
     const supabase = await createClient()
     const { data, error } = await supabase.from("categories").select("*").order("name", { ascending: true })
@@ -50,7 +57,7 @@ export async function CategoriesSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {categories.slice(0, 8).map((category: any) => (
+          {categories.slice(0, 8).map((category: Category) => (
             <Link
               key={category.id}
               href={`/categories/${category.slug}`}

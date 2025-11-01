@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import Image from "next/image"
@@ -24,15 +24,10 @@ export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
-  const supabase = createClient()
   const { toast } = useToast()
   const router = useRouter()
 
-  useEffect(() => {
-    fetchCategories()
-  }, [])
-
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       // Add cache control to prevent unnecessary refetching
       const response = await fetch("/api/admin/categories", {
@@ -48,17 +43,21 @@ export default function AdminCategoriesPage() {
       
       const data = await response.json()
       setCategories(data.categories || [])
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error fetching categories:", error)
       toast({
         title: "Error",
-        description: error.message || "Failed to load categories",
+        description: (error as Error).message || "Failed to load categories",
         variant: "destructive",
       })
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
+
+  useEffect(() => {
+    fetchCategories()
+  }, [fetchCategories])
 
   const handleDelete = async (categoryId: string, categoryName: string) => {
     if (!confirm(`Are you sure you want to delete "${categoryName}"? This action cannot be undone.`)) return
@@ -82,10 +81,10 @@ export default function AdminCategoriesPage() {
 
       // Refresh the categories list
       await fetchCategories()
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to delete category",
+        description: (error as Error).message || "Failed to delete category",
         variant: "destructive",
       })
     } finally {

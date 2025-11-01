@@ -65,10 +65,10 @@ export default function NewProductPage() {
       })
 
       router.push("/admin/products")
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to create product",
+        description: (error as Error).message || "Failed to create product",
         variant: "destructive",
       })
     } finally {

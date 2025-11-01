@@ -31,8 +31,8 @@ export async function POST(request: Request, props: { params: Promise<{ id: stri
     }
 
     return NextResponse.json({ success: true, order: data })
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message || "Unknown error" }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message || "Unknown error" }, { status: 500 })
   }
 }

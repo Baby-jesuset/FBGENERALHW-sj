@@ -36,8 +36,9 @@ export default function ResetPasswordPage() {
         title: "Reset link sent!",
         description: "Check your email for password reset instructions.",
       })
-    } catch (error: any) {
-      console.error("Error sending password reset link:", error)
+    } catch (error) {
+      const err = error as Error
+      console.error("Error sending password reset link:", err)
       // Whitelist known-safe Supabase error messages for user feedback
       const safeMessages: { [key: string]: string } = {
         // "For security purposes, you can only request a password reset once every 60 seconds.":
@@ -45,7 +46,7 @@ export default function ResetPasswordPage() {
       }
 
       const userFriendlyMessage =
-        (error?.message && safeMessages[error.message]) || "An unexpected error occurred. Please try again."
+        (safeMessages[err.message]) || "An unexpected error occurred. Please try again."
 
       toast({
         title: "Error Sending Reset Link",
@@ -68,7 +69,7 @@ export default function ResetPasswordPage() {
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-foreground mb-2">Reset Password</h1>
                   <p className="text-muted-foreground">
-                    Enter your email address and we'll send you a link to reset your password
+                    Enter your email address and we&apos;ll send you a link to reset your password
                   </p>
                 </div>
 
@@ -111,7 +112,7 @@ export default function ResetPasswordPage() {
                 </div>
                 <h2 className="text-2xl font-bold text-foreground mb-2">Check your email</h2>
                 <p className="text-muted-foreground mb-6">
-                  We've sent password reset instructions to <strong>{email}</strong>
+                  We&apos;ve sent password reset instructions to <strong>{email}</strong>
                 </p>
                 <Button asChild className="w-full">
                   <Link href="/login">Return to login</Link>

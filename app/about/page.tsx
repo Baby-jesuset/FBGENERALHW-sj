@@ -72,8 +72,8 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-foreground mb-8 text-center">Our Story</h2>
               <div className="space-y-6 text-muted-foreground leading-relaxed">
                 <p>
-                  Founded in 2010, FB General Hardware has grown from a small local shop to one of Uganda's most trusted
-                  suppliers of building materials and hardware. Our journey began with a simple mission: "Service Beyond Delivery".
+                  Founded in 2010, FB General Hardware has grown from a small local shop to one of Uganda&apos;s most trusted
+                  suppliers of building materials and hardware. Our journey began with a simple mission: &quot;Service Beyond Delivery&quot;.
                 </p>
                 <p>
                   Over the years, we have built strong relationships with leading manufacturers and suppliers, ensuring

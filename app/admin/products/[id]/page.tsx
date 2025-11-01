@@ -83,10 +83,10 @@ export default function EditProductPage(props: { params: Promise<{ id: string }>
       })
 
       router.push("/admin/products")
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to update product",
+        description: (error as Error).message || "Failed to update product",
         variant: "destructive",
       })
     } finally {
@@ -112,10 +112,10 @@ export default function EditProductPage(props: { params: Promise<{ id: string }>
       })
 
       router.push("/admin/products")
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to delete product",
+        description: (error as Error).message || "Failed to delete product",
         variant: "destructive",
       })
     } finally {

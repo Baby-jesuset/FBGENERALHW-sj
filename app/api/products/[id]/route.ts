@@ -35,9 +35,9 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
     }
 
     return NextResponse.json({ product })
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }
 
@@ -62,9 +62,9 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
     if (error) throw error
 
     return NextResponse.json({ product: data })
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }
 
@@ -87,8 +87,8 @@ export async function DELETE(request: Request, props: { params: Promise<{ id: st
     if (error) throw error
 
     return NextResponse.json({ message: "Product deleted successfully" })
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }

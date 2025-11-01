@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useState, useEffect, useCallback } from "react"
+import { useParams } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
@@ -16,30 +16,47 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+interface Order {
+  id: string;
+  created_at: string;
+  status: string;
+  full_name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  country?: string;
+  postal_code?: string;
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  payment_method?: string;
+  payment_status?: string;
+}
+
+interface OrderItem {
+  id: string;
+  order_id: string;
+  product_id: string;
+  product_name: string;
+  price: number;
+  quantity: number;
+}
+
 export default function OrderDetailsPage() {
   const params = useParams()
-  const router = useRouter()
   const { toast } = useToast()
-  const [order, setOrder] = useState<any>(null)
-  const [orderItems, setOrderItems] = useState<any[]>([])
+  const [order, setOrder] = useState<Order | null>(null)
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updating, setUpdating] = useState(false)
   const [status, setStatus] = useState("")
-  const supabase = createClient()
 
   const orderId = params.id as string
 
-  useEffect(() => {
-    if (orderId) {
-      fetchOrderDetails()
-    } else {
-      setError("No order ID provided")
-      setLoading(false)
-    }
-  }, [orderId])
-
-  const fetchOrderDetails = async () => {
+  const fetchOrderDetails = useCallback(async () => {
     try {
       setLoading(true)
       
@@ -100,18 +117,27 @@ export default function OrderDetailsPage() {
       
       setOrderItems(itemsData || [])
       
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error fetching order details:", error)
-      setError(error.message || "Failed to load order details")
+      setError((error as Error).message || "Failed to load order details")
       toast({
         title: "Error",
-        description: "Failed to load order details: " + (error.message || "Unknown error"),
+        description: "Failed to load order details: " + ((error as Error).message || "Unknown error"),
         variant: "destructive",
       })
     } finally {
       setLoading(false)
     }
-  }
+  }, [orderId, toast])
+
+  useEffect(() => {
+    if (orderId) {
+      fetchOrderDetails()
+    } else {
+      setError("No order ID provided")
+      setLoading(false)
+    }
+  }, [orderId, fetchOrderDetails])
 
   const updateOrderStatus = async () => {
     try {
@@ -137,7 +163,9 @@ export default function OrderDetailsPage() {
           })
           
           // Update local order data
-          setOrder({ ...order, status })
+          if (order) {
+            setOrder({ ...order, status })
+          }
           return
         }
       } catch (apiError) {
@@ -160,12 +188,14 @@ export default function OrderDetailsPage() {
       })
 
       // Update local order data
-      setOrder({ ...order, status })
-    } catch (error: any) {
+      if (order) {
+        setOrder({ ...order, status })
+      }
+    } catch (error) {
       console.error("Error updating order status:", error)
       toast({
         title: "Update failed",
-        description: error.message || "Failed to update order status",
+        description: (error as Error).message || "Failed to update order status",
         variant: "destructive",
       })
     } finally {

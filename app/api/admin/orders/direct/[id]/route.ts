@@ -38,8 +38,8 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
       order,
       items: items || []
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error.message || "Unknown error" }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message || "Unknown error" }, { status: 500 })
   }
 }

@@ -20,11 +20,11 @@ export async function GET() {
     if (error) throw error
 
     return NextResponse.json({ orders: data || [] })
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof UnauthorizedError) {
       return NextResponse.json({ error: error.message }, { status: 403 })
     }
     console.error(error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 })
   }
 }

@@ -42,10 +42,10 @@ export default function NewCategoryPage() {
       })
 
       router.push("/admin/categories")
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to create category",
+        description: (error as Error).message || "Failed to create category",
         variant: "destructive",
       })
     } finally {

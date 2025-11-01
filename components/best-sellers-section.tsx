@@ -12,6 +12,14 @@ import { LoadingSpinner } from "@/components/loading-spinner"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+  is_featured?: boolean;
+}
+
 export function BestSellersSection() {
   const { addItem } = useCart()
   const { toast } = useToast()
@@ -19,7 +27,7 @@ export function BestSellersSection() {
   const { data, isLoading } = useSWR("/api/products?limit=8", fetcher)
   const products = data?.products || []
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     addItem(product.id)
     toast({
       title: "Added to cart",
@@ -46,7 +54,7 @@ export function BestSellersSection() {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product: any) => (
+              {products.map((product: Product) => (
                 <Card
                   key={product.id}
                   className="group overflow-hidden border-border hover:border-primary transition-all"

@@ -2,36 +2,42 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
+interface Profile {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+}
+
 export default async function AdminOrdersPage() {
   const supabase = await createClient()
 
   // Fetch orders
-  const { count: orderCount, error: countError } = await supabase
+  await supabase
     .from("orders")
     .select("*", { count: "exact", head: true })
 
   // Fetch orders directly with Supabase
-  const { data: orders, error } = await supabase
+  const { data: orders } = await supabase
     .from("orders")
     .select("*")
     .order("created_at", { ascending: false })
   
   // Fetch user profiles separately
-  let userProfiles: Record<string, any> = {}
+  let userProfiles: Record<string, Profile> = {}
   if (orders && orders.length > 0) {
     // Get unique user IDs
     const userIds = [...new Set(orders.map(order => order.user_id))]
     
-    const { data: profiles, error: profileError } = await supabase
+    const { data: profiles } = await supabase
       .from("profiles")
       .select("id, full_name, email")
       .in("id", userIds)
     
     // Create a lookup map
-    userProfiles = (profiles || []).reduce((acc: Record<string, any>, profile) => {
+    userProfiles = (profiles || []).reduce((acc: Record<string, Profile>, profile) => {
       acc[profile.id] = profile
       return acc
-    }, {} as Record<string, any>)
+    }, {})
   }
 
   return (

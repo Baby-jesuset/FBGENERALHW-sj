@@ -59,10 +59,10 @@ export default function EditCategoryPage(props: { params: Promise<{ id: string }
       })
 
       router.push("/admin/categories")
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to update category",
+        description: (error as Error).message || "Failed to update category",
         variant: "destructive",
       })
     } finally {
@@ -88,10 +88,10 @@ export default function EditCategoryPage(props: { params: Promise<{ id: string }
       })
 
       router.push("/admin/categories")
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
-        description: error.message || "Failed to delete category",
+        description: (error as Error).message || "Failed to delete category",
         variant: "destructive",
       })
     } finally {

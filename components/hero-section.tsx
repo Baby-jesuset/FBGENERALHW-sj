@@ -8,11 +8,18 @@ import { LoadingSpinner } from "@/components/loading-spinner"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+interface FeaturedProduct {
+  id: string;
+  name: string;
+  description: string;
+  image?: string;
+}
+
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const { data, isLoading } = useSWR("/api/products?is_featured=true&limit=3", fetcher)
-  const featuredProducts = data?.products || []
+  const featuredProducts: FeaturedProduct[] = data?.products || []
 
   useEffect(() => {
     if (featuredProducts.length === 0) return
@@ -59,7 +66,7 @@ export function HeroSection() {
 
   return (
     <section className="relative h-[600px] md:h-[700px] overflow-hidden bg-muted">
-      {featuredProducts.map((product: any, index: number) => (
+      {featuredProducts.map((product, index: number) => (
         <div
           key={product.id}
           className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -104,7 +111,7 @@ export function HeroSection() {
       {/* Slide Indicators */}
       {featuredProducts.length > 1 && (
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          {featuredProducts.map((_: any, index: number) => (
+          {featuredProducts.map((_, index: number) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
