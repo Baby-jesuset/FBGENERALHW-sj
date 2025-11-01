@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Header } from "@/components/header"
@@ -15,6 +15,7 @@ import { Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -36,7 +37,6 @@ export default function LoginPage() {
       })
 
       if (signInError) {
-        console.error(signInError)
         throw signInError
       }
       
@@ -65,8 +65,8 @@ export default function LoginPage() {
         .single()
       
       if (profileError) {
-        console.error(profileError)
-        // Don't throw here, just log the error
+        // Don't throw here, just log the error and proceed
+        console.warn("Could not fetch user profile after login:", profileError)
       }
       
       
@@ -76,29 +76,16 @@ export default function LoginPage() {
         description: "You have successfully logged in.",
       })
       
-      // Use router.replace instead of push for more reliable navigation
-      // and add a slight delay to ensure auth state is properly updated
-      setTimeout(() => {
-        try {
-          if (profile?.is_admin) {
-            
-            router.replace("/admin")
-          } else {
-            
-            router.replace("/account")
-          }
-        } catch (navError) {
-          console.error(navError)
-          // Fallback to window.location if router fails
-          window.location.href = profile?.is_admin ? "/admin" : "/account"
-        }
-      }, 800)
+      const redirectedFrom = searchParams.get("redirectedFrom")
+      const isAdmin = authUser.app_metadata?.is_admin || profile?.is_admin || false
+      const targetUrl = redirectedFrom || (isAdmin ? "/admin" : "/account")
+
+      router.replace(targetUrl)
       
     } catch (error: any) {
-      console.error(error)
       toast({
-        title: "Login failed",
-        description: error.message || "Invalid email or password. Please try again.",
+        title: "Login Failed",
+        description: error.message || "An unexpected error occurred. Please try again.",
         variant: "destructive",
       })
     } finally {

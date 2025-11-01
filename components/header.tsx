@@ -171,7 +171,7 @@ export function Header() {
               {isMobileMenuOpen ? (
                 <X className="h-5 w-5" />
               ) : (
-                <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5" />
               )}
               <span className="sr-only">{isMobileMenuOpen ? "Close menu" : "Open menu"}</span>
             </Button>
@@ -182,146 +182,146 @@ export function Header() {
       {/* Mobile Menu - Full Height Overlay (starts below header) */}
       {isMobileMenuOpen && (
         <div className="md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] z-[100] bg-white shadow-lg border-r border-gray-200 transition-all duration-300 ease-in-out">
-          <div className="flex flex-col h-full">
-            {/* Menu Header */}
+            <div className="flex flex-col h-full">
+              {/* Menu Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white flex-shrink-0">
               <span className="text-xl font-bold text-gray-900">Menu</span>
-            </div>
+              </div>
 
-            {/* Menu Content - Scrollable */}
+              {/* Menu Content - Scrollable */}
             <div className="flex-1 overflow-y-auto p-4 bg-white min-h-0">
               <nav className="space-y-4">
-                {/* Main Navigation */}
-                <Link
-                  href="/"
-                  onClick={closeMobileMenu}
+                  {/* Main Navigation */}
+                  <Link
+                    href="/"
+                    onClick={closeMobileMenu}
                   className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors bg-white"
-                >
-                  HOME
-                </Link>
-                <Link
-                  href="/shop"
-                  onClick={closeMobileMenu}
+                  >
+                    HOME
+                  </Link>
+                  <Link
+                    href="/shop"
+                    onClick={closeMobileMenu}
                   className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  SHOP
-                </Link>
-                <Link
-                  href="/categories/all"
-                  onClick={closeMobileMenu}
+                  >
+                    SHOP
+                  </Link>
+                  <Link
+                    href="/categories/all"
+                    onClick={closeMobileMenu}
                   className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  CATEGORIES
-                </Link>
-                <Link
-                  href="/about"
-                  onClick={closeMobileMenu}
+                  >
+                    CATEGORIES
+                  </Link>
+                  <Link
+                    href="/about"
+                    onClick={closeMobileMenu}
                   className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  ABOUT
-                </Link>
-                <Link
-                  href="/contact"
-                  onClick={closeMobileMenu}
+                  >
+                    ABOUT
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={closeMobileMenu}
                   className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  CONTACT
-                </Link>
+                  >
+                    CONTACT
+                  </Link>
 
-                {/* Divider */}
+                  {/* Divider */}
                 <div className="my-4 border-t border-gray-200" />
 
-                {/* User Section */}
-                {isLoading ? (
+                  {/* User Section */}
+                  {isLoading ? (
                   <div className="p-4 text-base text-gray-500">
-                    Loading...
-                  </div>
-                ) : isAuthenticated && user ? (
-                  <>
+                      Loading...
+                    </div>
+                  ) : isAuthenticated && user ? (
+                    <>
                     <div className="p-4 mb-2 bg-gray-50 rounded-lg">
                       <p className="text-base font-semibold text-gray-900">
-                        {user?.full_name || "User"}
-                      </p>
+                          {user?.full_name || "User"}
+                        </p>
                       <p className="text-sm text-gray-600 mt-1">
-                        {user?.email}
-                      </p>
-                    </div>
-                    <Link
-                      href="/account"
-                      onClick={closeMobileMenu}
-                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      My Account
-                    </Link>
-                    <Link
-                      href="/account/orders"
-                      onClick={closeMobileMenu}
-                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      Order History
-                    </Link>
-                    <Link
-                      href="/account/profile"
-                      onClick={closeMobileMenu}
-                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      Profile Settings
-                    </Link>
-                    {user?.is_admin && (
+                          {user?.email}
+                        </p>
+                      </div>
                       <Link
-                        href="/admin"
+                        href="/account"
                         onClick={closeMobileMenu}
-                        className="block p-4 text-lg font-semibold text-primary hover:bg-gray-100 rounded-lg transition-colors"
+                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                       >
-                        Admin Dashboard
+                        My Account
                       </Link>
-                    )}
-                    <button
-                      onClick={() => {
-                        handleLogout()
-                        closeMobileMenu()
-                      }}
+                      <Link
+                        href="/account/orders"
+                        onClick={closeMobileMenu}
+                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                      >
+                        Order History
+                      </Link>
+                      <Link
+                        href="/account/profile"
+                        onClick={closeMobileMenu}
+                      className="block p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                      >
+                        Profile Settings
+                      </Link>
+                      {user?.is_admin && (
+                        <Link
+                          href="/admin"
+                          onClick={closeMobileMenu}
+                        className="block p-4 text-lg font-semibold text-primary hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          Admin Dashboard
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => {
+                          handleLogout()
+                          closeMobileMenu()
+                        }}
                       className="w-full text-left p-4 text-lg font-medium text-red-600 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      href="/login"
-                      onClick={closeMobileMenu}
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        onClick={closeMobileMenu}
                       className="block p-4 text-lg font-medium text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      href="/signup"
-                      onClick={closeMobileMenu}
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        href="/signup"
+                        onClick={closeMobileMenu}
                       className="block p-4 text-lg font-medium text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                      Sign Up
-                    </Link>
-                  </>
-                )}
+                      >
+                        Sign Up
+                      </Link>
+                    </>
+                  )}
 
-                {/* Divider */}
+                  {/* Divider */}
                 <div className="my-4 border-t border-gray-200" />
 
-                {/* Cart Link */}
-                <Link
-                  href="/cart"
-                  onClick={closeMobileMenu}
+                  {/* Cart Link */}
+                  <Link
+                    href="/cart"
+                    onClick={closeMobileMenu}
                   className="flex items-center justify-between p-4 text-lg font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <span>Shopping Cart</span>
-                  {totalItems > 0 && (
-                    <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-primary rounded-full">
-                      {totalItems}
-                    </span>
-                  )}
-                </Link>
-              </nav>
+                  >
+                    <span>Shopping Cart</span>
+                    {totalItems > 0 && (
+                      <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-primary rounded-full">
+                        {totalItems}
+                      </span>
+                    )}
+                  </Link>
+                </nav>
             </div>
           </div>
         </div>

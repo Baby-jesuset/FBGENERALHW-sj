@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Header } from '@/components/header'
+import { HeaderLite } from '@/components/header-lite'
 import { Footer } from '@/components/footer'
 import { AlertCircle } from 'lucide-react'
 
@@ -20,7 +20,7 @@ export default function Error({
 
   return (
     <>
-      <Header />
+      <HeaderLite />
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <div className="text-center max-w-md">
           <div className="mb-8 flex justify-center">

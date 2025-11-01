@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { UnauthorizedError } from "./errors"
 
 export async function isAdmin(): Promise<boolean> {
   try {
@@ -10,9 +11,8 @@ export async function isAdmin(): Promise<boolean> {
 
     if (!user) return false
 
-    const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
-
-    return profile?.is_admin || false
+    // Check for the is_admin claim in the user's app_metadata
+    return user.app_metadata?.is_admin === true
   } catch (error) {
     console.error(error)
     return false
@@ -23,7 +23,7 @@ export async function requireAdmin() {
   const admin = await isAdmin()
 
   if (!admin) {
-    throw new Error("Unauthorized: Admin access required")
+    throw new UnauthorizedError()
   }
 
   return true

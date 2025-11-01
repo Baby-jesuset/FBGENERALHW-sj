@@ -84,10 +84,9 @@ export default function SignupPage() {
         router.push("/auth/sign-up-success")
       }
     } catch (error: any) {
-      console.error(error)
       toast({
-        title: "Signup failed",
-        description: error.message || "An error occurred during signup.",
+        title: "Signup Failed",
+        description: error.message || "An unexpected error occurred. Please try again.",
         variant: "destructive",
       })
     } finally {

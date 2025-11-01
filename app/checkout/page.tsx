@@ -72,7 +72,7 @@ export default function CheckoutPage() {
         total: total,
         notes: contact.notes,
         items: items.map((item) => ({
-          product_id: item.id,
+          product_id: item.product_id,
           product_name: item.name,
           product_image: item.image,
           quantity: item.quantity,
@@ -84,16 +84,29 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderPayload),
       })
-      if (!res.ok) throw new Error("Failed to place order")
+
+      if (!res.ok) {
+        // Try to get a specific error message from the server
+        const errorData = await res.json().catch(() => null)
+        throw new Error(errorData?.error || "An unexpected error occurred.")
+      }
+      
       clearCart()
+      
       toast({
         title: "Order placed successfully!",
         description: "Thank you for your purchase. You will receive a confirmation email shortly.",
       })
-      setIsProcessing(false)
+      
       router.push("/account/orders")
+      
     } catch (err) {
-      toast({ title: "Order failed", description: (err as Error).message || "Failed to place order. Try again." })
+      toast({ 
+        title: "Order Failed", 
+        description: (err as Error).message, 
+        variant: "destructive" 
+      })
+    } finally {
       setIsProcessing(false)
     }
   }

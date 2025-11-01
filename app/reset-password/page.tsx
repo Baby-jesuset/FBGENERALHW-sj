@@ -37,10 +37,19 @@ export default function ResetPasswordPage() {
         description: "Check your email for password reset instructions.",
       })
     } catch (error: any) {
-      console.error(error)
+      console.error("Error sending password reset link:", error)
+      // Whitelist known-safe Supabase error messages for user feedback
+      const safeMessages: { [key: string]: string } = {
+        // "For security purposes, you can only request a password reset once every 60 seconds.":
+        //   "Reset link already sent. Please check your email or wait a moment before trying again.",
+      }
+
+      const userFriendlyMessage =
+        (error?.message && safeMessages[error.message]) || "An unexpected error occurred. Please try again."
+
       toast({
-        title: "Error",
-        description: error.message || "Failed to send reset email. Please try again.",
+        title: "Error Sending Reset Link",
+        description: userFriendlyMessage,
         variant: "destructive",
       })
     } finally {

@@ -88,12 +88,7 @@ export default function ShopPage() {
       return
     }
     
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image || "/placeholder.svg",
-    })
+    addItem(product.id)
     toast({
       title: "Added to cart",
       description: `${product.name} has been added to your cart.`,

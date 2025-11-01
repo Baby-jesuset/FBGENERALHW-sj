@@ -1,99 +1,59 @@
+-- Helper function to check for admin claims in the JWT
+create or replace function is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select (auth.jwt()->'app_metadata'->>'is_admin')::boolean
+$$;
+
 -- Add is_admin column to profiles
 alter table public.profiles add column if not exists is_admin boolean default false;
 
 -- Create index for admin lookups
 create index if not exists profiles_is_admin_idx on public.profiles(is_admin);
 
--- Update RLS policies to allow admins to manage products
-create policy "Admins can insert products"
-  on public.products for insert
-  with check (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
+-- Drop old, inefficient policies before creating new ones
+drop policy if exists "Admins can insert products" on public.products;
+drop policy if exists "Admins can update products" on public.products;
+drop policy if exists "Admins can delete products" on public.products;
+drop policy if exists "Admins can insert categories" on public.categories;
+drop policy if exists "Admins can update categories" on public.categories;
+drop policy if exists "Admins can delete categories" on public.categories;
+drop policy if exists "Admins can view all orders" on public.orders;
+drop policy if exists "Admins can update all orders" on public.orders;
+drop policy if exists "Admins can view all order items" on public.order_items;
+drop policy if exists "Admins can view all profiles" on public.profiles;
 
-create policy "Admins can update products"
-  on public.products for update
-  using (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
 
-create policy "Admins can delete products"
-  on public.products for delete
-  using (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
+-- RLS policies for products
+create policy "Admins can manage products"
+  on public.products for all
+  using ( is_admin() )
+  with check ( is_admin() );
 
--- Update RLS policies to allow admins to manage categories
-create policy "Admins can insert categories"
-  on public.categories for insert
-  with check (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
+-- RLS policies for categories
+create policy "Admins can manage categories"
+  on public.categories for all
+  using ( is_admin() )
+  with check ( is_admin() );
 
-create policy "Admins can update categories"
-  on public.categories for update
-  using (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
-
-create policy "Admins can delete categories"
-  on public.categories for delete
-  using (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
-
--- Update RLS policies to allow admins to view all orders
+-- RLS policies for orders
 create policy "Admins can view all orders"
   on public.orders for select
-  using (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
+  using ( is_admin() );
 
 create policy "Admins can update all orders"
   on public.orders for update
-  using (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
+  using ( is_admin() );
 
--- Allow admins to view all order items
+-- RLS policies for order_items
 create policy "Admins can view all order items"
   on public.order_items for select
-  using (
-    exists (
-      select 1 from public.profiles
-      where profiles.id = auth.uid()
-      and profiles.is_admin = true
-    )
-  );
+  using ( is_admin() );
+
+-- RLS policies for profiles
+create policy "Admins can view all profiles"
+  on public.profiles for select
+  using ( is_admin() );

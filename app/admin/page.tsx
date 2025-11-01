@@ -18,11 +18,11 @@ export default async function AdminDashboard() {
     .from("profiles")
     .select("id, is_admin")
 
-  // Count non-admin users as customers - using "is" for null safety
+  // Count non-admin users as customers
   const { count: usersCount, error: usersError } = await supabase
     .from("profiles")
     .select("*", { count: "exact", head: true })
-    .is("is_admin", false)
+    .or("is_admin.is.false,is_admin.is.null")
 
   const { data: orders, error: revenueError } = await supabase
     .from("orders")

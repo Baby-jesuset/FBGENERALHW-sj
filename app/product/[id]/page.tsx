@@ -55,14 +55,8 @@ export default function ProductPage() {
     // Make sure quantity doesn't exceed available stock
     const safeQuantity = Math.min(quantity, product.stock)
     
-    for (let i = 0; i < safeQuantity; i++) {
-      addItem({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-      })
-    }
+    addItem(product.id, safeQuantity)
+    
     toast({
       title: "Added to cart",
       description: `${safeQuantity} × ${product.name} added to your cart.`,

@@ -14,33 +14,19 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // Get user's orders
-    const { data: orders, error: ordersError } = await supabase
+    // Get user's orders and their items in a single query
+    const { data: orders, error } = await supabase
       .from("orders")
-      .select("*")
+      .select(`
+        *,
+        order_items (*)
+      `)
       .eq("user_id", user.id)
       .order("created_at", { ascending: false })
 
-    if (ordersError) throw ordersError
+    if (error) throw error
 
-    // Get order items for each order
-    const ordersWithItems = await Promise.all(
-      (orders || []).map(async (order) => {
-        const { data: items, error: itemsError } = await supabase
-          .from("order_items")
-          .select("*")
-          .eq("order_id", order.id)
-
-        if (itemsError) throw itemsError
-
-        return {
-          ...order,
-          items: items || [],
-        }
-      }),
-    )
-
-    return NextResponse.json({ orders: ordersWithItems })
+    return NextResponse.json({ orders: orders || [] })
   } catch (error: any) {
     console.error(error)
     return NextResponse.json({ error: error.message }, { status: 500 })
@@ -63,33 +49,14 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { items, ...orderData } = body
 
-    // Create order
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .insert([
-        {
-          ...orderData,
-          user_id: user.id,
-        },
-      ])
-      .select()
-      .single()
+    // Create order and items in a single transaction
+    const { data: order, error } = await supabase.rpc("create_order_with_items", {
+      user_id_input: user.id,
+      order_data: orderData,
+      order_items_input: items,
+    })
 
-    if (orderError) throw orderError
-
-    // Create order items
-    const orderItems = items.map((item: any) => ({
-      order_id: order.id,
-      product_id: item.product_id,
-      product_name: item.product_name,
-      product_image: item.product_image,
-      quantity: item.quantity,
-      price: item.price,
-    }))
-
-    const { error: itemsError } = await supabase.from("order_items").insert(orderItems)
-
-    if (itemsError) throw itemsError
+    if (error) throw error
 
     return NextResponse.json({ order }, { status: 201 })
   } catch (error: any) {

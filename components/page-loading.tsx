@@ -1,5 +1,7 @@
+"use client"
+
 import { LoadingSpinner } from "@/components/loading-spinner"
-import { Header } from "@/components/header"
+import { HeaderLite } from '@/components/header-lite'
 import { Footer } from "@/components/footer"
 
 interface PageLoadingProps {
@@ -10,7 +12,7 @@ interface PageLoadingProps {
 export function PageLoading({ showHeader = true, showFooter = true }: PageLoadingProps) {
   return (
     <>
-      {showHeader && <Header />}
+      {showHeader && <HeaderLite />}
       <main className="min-h-screen bg-background flex items-center justify-center py-12">
         <LoadingSpinner size="lg" />
       </main>

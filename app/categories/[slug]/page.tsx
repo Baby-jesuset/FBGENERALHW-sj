@@ -47,12 +47,7 @@ export default function CategoryPage(props: { params: Promise<{ slug: string }> 
   }, [products, sortBy])
 
   const handleAddToCart = (product: any) => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image_url,
-    })
+    addItem(product.id)
     toast({
       title: "Added to cart",
       description: `${product.name} has been added to your cart.`,

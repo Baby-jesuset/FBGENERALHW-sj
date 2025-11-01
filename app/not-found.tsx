@@ -1,13 +1,15 @@
+'use client'
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Header } from '@/components/header'
+import { HeaderLite } from '@/components/header-lite'
 import { Footer } from '@/components/footer'
 import { Home, Search } from 'lucide-react'
 
 export default function NotFound() {
   return (
     <>
-      <Header />
+      <HeaderLite />
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <div className="text-center max-w-lg">
           <h1 className="text-9xl font-bold text-primary mb-4">404</h1>
