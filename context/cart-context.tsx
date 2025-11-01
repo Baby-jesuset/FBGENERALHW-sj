@@ -95,7 +95,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
         // This is a bit tricky as we don't have product details yet
         // A full implementation would fetch product details or pass them in
-        return [...prev, { product_id, quantity, name: 'Loading...', price: 0, image: '', products: { name: '', price: 0, image: ''} }]
+        return [...prev, { product_id, quantity, name: 'Loading...', price: 0, image: '' }]
     })
 
     try {
@@ -132,18 +132,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const removeItem = async (product_id: string) => {
+    // Optimistically remove the item from the UI
+    setItems((prev) => prev.filter((item) => item.product_id !== product_id))
     try {
-      const response = await fetch('/api/cart', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product_id }),
+      const response = await fetch(`/api/cart?product_id=${product_id}`, {
+        method: "DELETE",
       })
       if (!response.ok) {
-        const error = await response.json().catch(() => ({ message: 'Failed to remove item' }))
-        throw new Error(error.message || 'Failed to remove item')
+        const error = await response
+          .json()
+          .catch(() => ({ message: "Failed to remove item" }))
+        throw new Error(error.message || "Failed to remove item")
       }
       // Re-sync with server state on success to ensure consistency.
-      await fetchCart() 
+      await fetchCart()
     } catch (error: any) {
       toast({
         title: "Error Removing Item",

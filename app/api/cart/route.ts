@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 // Get cart items for the authenticated user
 export async function GET() {
@@ -40,6 +40,10 @@ export async function POST(request: Request) {
     }
 
     const { product_id, quantity } = await request.json()
+
+    if (typeof product_id !== 'string' || product_id.trim().length === 0) {
+      return NextResponse.json({ error: "product_id must be a non-empty string" }, { status: 400 });
+    }
 
     if (typeof quantity !== 'number' || quantity <= 0) {
       return NextResponse.json({ error: "Quantity must be a positive number" }, { status: 400 })
@@ -87,8 +91,12 @@ export async function PATCH(request: Request) {
 
     const { product_id, quantity } = await request.json()
 
-    if (quantity <= 0) {
-      return NextResponse.json({ error: "Quantity must be positive" }, { status: 400 })
+    if (typeof product_id !== 'string' || product_id.trim().length === 0) {
+      return NextResponse.json({ error: "product_id must be a non-empty string" }, { status: 400 });
+    }
+
+    if (typeof quantity !== 'number' || quantity <= 0) {
+      return NextResponse.json({ error: "Quantity must be a positive number" }, { status: 400 })
     }
 
     const { data, error } = await supabase
@@ -109,7 +117,7 @@ export async function PATCH(request: Request) {
 }
 
 // Remove an item from the cart
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -118,19 +126,44 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { product_id } = await request.json()
+    const product_id = request.nextUrl.searchParams.get("product_id")
+
+    if (!product_id) {
+      return NextResponse.json(
+        { error: "product_id is required" },
+        { status: 400 },
+      )
+    }
+
+    // Regular expression to check if string is a valid UUID
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(product_id)) {
+      return NextResponse.json(
+        { error: "Invalid product_id format." },
+        { status: 400 },
+      )
+    }
 
     const { error } = await supabase
       .from("cart_items")
       .delete()
       .eq("user_id", user.id)
-      .eq("product_id", product_id as string)
+      .eq("product_id", product_id)
 
     if (error) throw error
 
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: error instanceof Error ? error.message : "An unknown error occurred" }, { status: 500 })
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "An unknown error occurred",
+      },
+      { status: 500 },
+    )
   }
 }

@@ -84,12 +84,20 @@ export default function SignupPage() {
         router.push("/auth/sign-up-success")
       }
     } catch (error: any) {
+      console.error("Signup error:", error)
+      // Whitelist known-safe Supabase error messages for user feedback
+      const safeMessages: { [key: string]: string } = {
+        // Add known safe messages here as needed
+      }
+
+      const userFriendlyMessage =
+        (error?.message && safeMessages[error.message]) || "An unexpected error occurred. Please try again."
+
       toast({
         title: "Signup Failed",
-        description: error.message || "An unexpected error occurred. Please try again.",
+        description: userFriendlyMessage,
         variant: "destructive",
-      })
-    } finally {
+      })    } finally {
       setIsLoading(false)
     }
   }

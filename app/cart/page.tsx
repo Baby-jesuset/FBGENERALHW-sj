@@ -78,11 +78,11 @@ export default function CartPage() {
     {/* Cart Items */}
     <div className="lg:col-span-2 space-y-4">
       {items.map((item) => (
-        <Card key={item.id} className="overflow-hidden">
+        <Card key={item.product_id} className="overflow-hidden">
           <CardContent className="p-4">
             <div className="flex flex-col sm:flex-row gap-4">
               {/* Product Image */}
-              <Link href={`/product/${item.id}`} className="flex-shrink-0 mx-auto sm:mx-0">
+              <Link href={`/product/${item.product_id}`} className="flex-shrink-0 mx-auto sm:mx-0">
                 <div className="relative w-24 h-24 bg-muted rounded-lg overflow-hidden">
                   <Image
                     src={item.image || "/placeholder.svg"}
@@ -97,7 +97,7 @@ export default function CartPage() {
 
               {/* Product Details */}
               <div className="flex-1 min-w-0 text-center sm:text-left">
-                <Link href={`/product/${item.id}`}>
+                <Link href={`/product/${item.product_id}`}>
                   <h3 className="font-semibold text-foreground hover:text-primary transition-colors line-clamp-2 text-sm">
                     {item.name}
                   </h3>
@@ -111,7 +111,7 @@ export default function CartPage() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 rounded-none"
-                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                      onClick={() => handleQuantityChange(item.product_id, item.quantity - 1)}
                       disabled={item.quantity <= 1}
                     >
                       <Minus className="h-4 w-4" />
@@ -119,7 +119,7 @@ export default function CartPage() {
                     <Input
                       type="number"
                       value={item.quantity}
-                      onChange={(e) => handleQuantityChange(item.id, Number.parseInt(e.target.value) || 1)}
+                      onChange={(e) => handleQuantityChange(item.product_id, Number.parseInt(e.target.value) || 1)}
                       className="h-8 w-16 text-center border-0 border-x border-border rounded-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       min="1"
                     />
@@ -127,7 +127,7 @@ export default function CartPage() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 rounded-none"
-                      onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                      onClick={() => handleQuantityChange(item.product_id, item.quantity + 1)}
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -137,7 +137,7 @@ export default function CartPage() {
                     variant="ghost"
                     size="sm"
                     className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                    onClick={() => handleRemoveItem(item.id, item.name)}
+                    onClick={() => handleRemoveItem(item.product_id, item.name)}
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
                     Remove
